@@ -1,0 +1,15 @@
+.login-form {
+  max-width: 400px;
+  min-width: 300px;
+}
+
+.login-form-button {
+  width: 100%;
+}
+
+.login-form-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
