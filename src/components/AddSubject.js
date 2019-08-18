@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 export class AddSubject extends Component {
 	render() {
-		return <div>AddSubject</div>
+		return <div>AddSubject{Math.random()}</div>
 	}
 }
 
