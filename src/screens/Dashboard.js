@@ -1,16 +1,20 @@
 import React, { Component } from 'react'
-import { Layout, Tabs } from 'antd'
+import { Layout, Tabs, Button } from 'antd'
 
 import Student from '../components/Student'
 import Subject from '../components/Subject'
 import Overview from '../components/Overview'
+import { AuthContext } from '../context/authContext'
 
 const { Content, Header, Footer } = Layout
 const { TabPane } = Tabs
 const TabItems = ['OVERVIEW', 'SUBJECT', 'STUDENT']
 
 export class Dashboard extends Component {
+	static contextType = AuthContext
+
 	state = { reRender: Math.random() }
+
 	renderTabContent = item => {
 		/* 'reRender' To update the tab content */
 		const reRender = this.state.reRender
@@ -38,6 +42,20 @@ export class Dashboard extends Component {
 								style={{ minHeight: 300 }}
 								/* To update the tab content */
 								onChange={() => this.setState({ reRender: Math.random() })}
+								tabBarExtraContent={
+									<Button
+										type="danger"
+										shape="circle"
+										icon="poweroff"
+										style={{ marginRight: 10 }}
+										onClick={() => {
+											// Remove user from localStorage
+											localStorage.removeItem('user')
+											// Update the auth context
+											this.context.setUser(null)
+										}}
+									/>
+								}
 							>
 								{TabItems.map(item => (
 									<TabPane

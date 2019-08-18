@@ -16,7 +16,7 @@ class LoginForm extends React.Component {
 				const { username, password } = values
 				if (username === 'admin' && password === 'admin123') {
 					const user = { username }
-					// Set AUTH_TOKEN & user to localStorage
+					// Set user to localStorage
 					localStorage.setItem('user', JSON.stringify(user))
 					// Update the auth context
 					this.context.setUser(user)

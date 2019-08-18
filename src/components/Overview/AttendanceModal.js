@@ -40,7 +40,7 @@ export class AttendanceModal extends Component {
 			reg
 		})
 		if (exist) {
-			console.log('Exist doc:', exist)
+			// console.log('Exist doc:', exist)
 			/* So update */
 			await db.attendance.update(
 				{ subject: this.state.activeSubject, date: getDate(), reg: reg },
@@ -78,43 +78,61 @@ export class AttendanceModal extends Component {
 		if (!data) return null
 		const { reg, subjects } = data
 		const TabItems = subjects.split(',')
-		return (
-			<Tabs
-				defaultActiveKey={TabItems[0]}
-				tabPosition={'top'}
-				style={{ minHeight: 300 }}
-				/* To update the tab content */
-				onChange={activeKey =>
-					this.setState({ activeSubject: activeKey }, async () => {
-						await this.findAttendance(activeKey, getDate(), reg)
-					})
+		let totalPresent = 0
+		result &&
+			result.forEach(x => {
+				if (x.attended) {
+					totalPresent++
 				}
-			>
-				{TabItems.map(item => (
-					<TabPane tab={`${item}`} key={item} style={{ padding: '0 20px' }}>
-						{loading ? (
-							<Spin />
-						) : (
-							<div>
-								<List
-									size="small"
-									header={<div>Check it to mark as attended!</div>}
-									bordered
-									dataSource={result.map(x => (
-										<AttendanceForm
-											data={x}
-											date={getDate()}
-											setAttendance={this.setAttendance}
-											updateLoading={updateLoading}
-										/>
-									))}
-									renderItem={item => <List.Item>{item}</List.Item>}
-								/>
-							</div>
-						)}
-					</TabPane>
-				))}
-			</Tabs>
+			})
+		return (
+			<>
+				{result && (
+					<div style={{ display: 'flex', justifyContent: 'center' }}>
+						<h1 style={{ margin: 0, position: 'fixed', zIndex: 9999, background: '#fff' }}>
+							Total Attendance: <span style={{ color: 'green' }}>{totalPresent}</span>/
+							{result.length} | Percentage: {Math.round((100 * totalPresent) / result.length)}%
+						</h1>
+					</div>
+				)}
+				<br />
+				<Tabs
+					defaultActiveKey={TabItems[0]}
+					tabPosition={'top'}
+					style={{ minHeight: 300 }}
+					/* To update the tab content */
+					onChange={activeKey =>
+						this.setState({ activeSubject: activeKey }, async () => {
+							await this.findAttendance(activeKey, getDate(), reg)
+						})
+					}
+				>
+					{TabItems.map(item => (
+						<TabPane tab={`${item}`} key={item} style={{ padding: '0 20px' }}>
+							{loading ? (
+								<Spin />
+							) : (
+								<div>
+									<List
+										size="small"
+										header={<div>Check it to mark as attended!</div>}
+										bordered
+										dataSource={result.map(x => (
+											<AttendanceForm
+												data={x}
+												date={getDate()}
+												setAttendance={this.setAttendance}
+												updateLoading={updateLoading}
+											/>
+										))}
+										renderItem={item => <List.Item>{item}</List.Item>}
+									/>
+								</div>
+							)}
+						</TabPane>
+					))}
+				</Tabs>
+			</>
 		)
 	}
 }

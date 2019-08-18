@@ -7,7 +7,11 @@ export class AttendanceForm extends Component {
 	handleChange = checked => {
 		this.setState({ checked, loading: true })
 		this.props.setAttendance(this.props.data.id, checked)
-		setTimeout(() => this.setState({ loading: false }), 1500)
+		this.timer = setTimeout(() => this.setState({ loading: false }), 1500)
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.timer)
 	}
 
 	render() {
