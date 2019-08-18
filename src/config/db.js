@@ -1,6 +1,10 @@
 // Database(https://github.com/louischatriot/nedb)
-import Datastore from 'nedb'
+import Datastore from 'nedb-promises'
 
-var db = {};
+var db = {}
 
-db.due = new Datastore({ filename: 'due.db', autoload: true });
+db.subject = new Datastore({ filename: 'subject.db', autoload: true })
+db.student = new Datastore({ filename: 'student.db', autoload: true })
+db.attendance = new Datastore({ filename: 'attendance.db', autoload: true })
+
+export default db
